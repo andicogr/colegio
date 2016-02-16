@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	
+	<http pattern="/resources" security="none" />
+
+	 <http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/login" access="permitAll"/>
+		<intercept-url pattern="/login2" access="permitAll"/>
+		<intercept-url pattern="/logout" access="permitAll"/>
+		<intercept-url pattern="/denied" access="permitAll"/>
+		<intercept-url pattern="/" access="isAuthenticated()"/>
+
+
+		<!-- Permisos de Seguridad -->
+		<intercept-url pattern="/seguridad/usuarios/**" access="hasAnyRole('ROLE_SEGURIDAD_USUARIOS','ROLE_SEGURIDAD','ROLE_ADMIN')"/>
+		<intercept-url pattern="/seguridad/perfil/**" access="hasAnyRole('ROLE_SEGURIDAD_PERFILES','ROLE_SEGURIDAD','ROLE_ADMIN')"/>
+		<intercept-url pattern="/seguridad/rol/**" access="hasAnyRole('ROLE_SEGURIDAD_ROLES','ROLE_SEGURIDAD','ROLE_ADMIN')"/>
+		
+		
+		<!-- Permisos de Mantenimiento -->
+		<intercept-url pattern="/mantenimientoInterno" access="hasAnyRole('ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarTiposDocumentos"  access="hasAnyRole('ROLE_MANTEMIENTO_ENTIDADDOCUMENTO','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarColeccion"  access="hasAnyRole('ROLE_MANTEMIENTO_COLECCION','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarTiposProductos"  access="hasAnyRole('ROLE_MANTEMIENTO_TIPOPRODUCTO','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarMateriasPrimas"  access="hasAnyRole('ROLE_MANTEMIENTO_MATERIAPRIMA','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarTiposMateriasPrimas"  access="hasAnyRole('ROLE_MANTEMIENTO_TIPOMATERIAPRIMA','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarTiposManosObras"  access="hasAnyRole('ROLE_MANTEMIENTO_PROCESOPRODUCCION','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarTiposArchivos"  access="hasAnyRole('ROLE_MANTEMIENTO_TIPOARCHIVO','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarUnidadesMedidas"  access="hasAnyRole('ROLE_MANTEMIENTO_UNIDADMEDIDA','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarCargos"  access="hasAnyRole('ROLE_MANTEMIENTO_CARGOORGANIZACIONAL','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarAreas"  access="hasAnyRole('ROLE_MANTEMIENTO_AREA','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarEstados"  access="hasAnyRole('ROLE_MANTEMIENTO_ESTADOS','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarEstados"  access="hasAnyRole('ROLE_MANTEMIENTO_EMPRESA','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		<intercept-url pattern="/mantenimientoInterno/listarMotivoTraslado"  access="hasAnyRole('ROLE_MANTEMIENTO_MOTIVOTRASLADO','ROLE_MANTEMIENTO','ROLE_ADMIN')"/>
+		
+		<!-- Permisos de Compras -->
+		<intercept-url pattern="/compras" access="hasAnyRole('ROLE_COMPRAS','ROLE_ADMIN')"/>
+		<intercept-url pattern="/compras/orden/*" access="hasAnyRole('ROLE_COMPRAS','ROLE_COMPRAS_ORDENCOMPRA','ROLE_ADMIN')"/>
+		<intercept-url pattern="/compras/proveedor/*" access="hasAnyRole('ROLE_COMPRAS','ROLE_COMPRAS_PROVEEDOR','ROLE_ADMIN')"/>
+		
+		
+		<!-- Permisos de Ventas -->
+		<intercept-url pattern="/venta" access="hasAnyRole('ROLE_VENTAS','ROLE_ADMIN')"/>
+		<intercept-url pattern="/venta/cliente/**"  access="hasAnyRole('ROLE_VENTA_CLIENTE','ROLE_VENTA','ROLE_ADMIN')"/>
+		<intercept-url pattern="/venta/producto/**" access="hasAnyRole('ROLE_VENTA_PRODUCTO','ROLE_VENTA','ROLE_ADMIN')"/>
+		<intercept-url pattern="/ventas/**"         access="hasAnyRole('ROLE_VENTA_ORDENPEDIDO','ROLE_VENTA','ROLE_ADMIN')"/>
+		<intercept-url pattern="/venta/proyecto/**" access="hasAnyRole('ROLE_VENTA_PROYECTO','ROLE_VENTA','ROLE_ADMIN')"/>
+		
+		
+		<!-- Permiso de Almacen -->
+		<intercept-url pattern="/almacen" access="hasAnyRole('ROLE_ALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/almacen/movimiento/materiaPrima/**"  access="hasAnyRole('ROLE_ALMACEN_MOVIMIENTO_MATERIAPRIMA','ROLE_ALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/almacen/movimiento/producto/**"  access="hasAnyRole('ROLE_ALMACEN_MOVIMIENTO_PRODUCTO', 'ROLE_ALMACEN','ROLE_REPORTE','ROLE_ADMIN')"/>
+<!-- 		<intercept-url pattern="/almacen/movimiento/guiaRemision/**"  access="hasAnyRole('ROLE_ALMACEN_GUIA_REMISION', 'ROLE_ALMACEN','ROLE_REPORTE','ROLE_ADMIN')"/> -->
+			
+		<!-- Permiso de Reportes -->
+		<intercept-url pattern="/reporte" access="hasAnyRole('ROLE_REPORTE','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/producto/**"  access="hasAnyRole('ROLE_REPORTE_PRODUCTO_ANALISIS','ROLE_REPORTE','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/ordenpedido/**"  access="hasAnyRole('ROLE_REPORTE_ORDENPEDIDO_PORMATERIAPRIMA', 'ROLE_REPORTE_ORDENPEDIDO_PORPRODUCTO','ROLE_REPORTE','ROLE_ADMIN')"/>
+	
+		
+		<!-- Permiso de Reportes Almacen -->
+		<intercept-url pattern="/reporte" access="hasAnyRole('ROLE_REPORTEALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/movimiento/materiaPrima/**"  access="hasAnyRole('ROLE_REPORTEALMACEN_MOVIMIENTOMP','ROLE_REPORTEALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/movimiento/tipoMateriaPrima/**"  access="hasAnyRole('ROLE_REPORTEALMACEN_MOVIMIENTOMPSALDO','ROLE_REPORTEALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/movimiento/producto/**"  access="hasAnyRole('ROLE_REPORTEALMACEN_PRODUCTO','ROLE_REPORTEALMACEN','ROLE_ADMIN')"/>
+		<intercept-url pattern="/reporte/movimiento/productoSaldo/**"  access="hasAnyRole('ROLE_REPORTEALMACEN_PRODUCTOSALDO','ROLE_REPORTEALMACEN','ROLE_ADMIN')"/>
+<!-- 		<intercept-url pattern="/reporte/movimiento/guiaRemision/**"  access="hasAnyRole('ROLE_REPORTE_GUIAREMISION','ROLE_REPORTEALMACEN','ROLE_ADMIN')"/> -->
+		
+		<!-- Permiso de Produccion -->
+		<intercept-url pattern="/produccion" access="hasAnyRole('ROLE_PRODUCCION','ROLE_ADMIN')"/>
+		<intercept-url pattern="/produccion/ordenpedido/**"  access="hasAnyRole('ROLE_PRODUCCION_ORDENPEDIDO','ROLE_VENTA','ROLE_ADMIN')"/>
+		
+
+		<form-login login-page="/login"	authentication-failure-url="/login/failure"	default-target-url="/"/>
+		
+		<access-denied-handler error-page="/denied"/>
+		
+		<logout invalidate-session="true" 	logout-success-url="/logout/success" logout-url="/logout"/>
+		
+		<session-management > 
+			<concurrency-control error-if-maximum-exceeded="true" max-sessions="1"/>
+    	</session-management>
+		
+	</http>
+	<global-method-security secured-annotations="enabled" />
+	
+	<beans:bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" id="passwordEncoder"/>
+	
+	
+	<authentication-manager>
+	        <authentication-provider user-service-ref="customUserDetailsService">
+	        		 <password-encoder ref="passwordEncoder"/>
+	        </authentication-provider>
+	</authentication-manager>
+	
+</beans:beans>
