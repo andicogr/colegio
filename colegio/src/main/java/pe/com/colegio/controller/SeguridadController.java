@@ -26,6 +26,7 @@ public class SeguridadController {
 	public String usuarioForm(Model model,Integer msg){
 		log.info("[SeguridadController] - [usuarioForm]");
 		usuarioService.listaUsuarios();
+		/*Mejorar el data table para la vista y tener un standar*/
 		return "seguridad/usuario/usuarioList";
 	}
 }
